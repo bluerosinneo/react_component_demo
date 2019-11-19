@@ -60,11 +60,17 @@ class Contact extends Component{
                             <label>Last Name:</label>
                             <input onChange={this.handleChange} type="text" name="lastName" value={this.state.lastName} />
                         </div>
+                        <div>
+                            <label>E-mail:</label>
+                            <input onChange={this.handleChange} type="text" name="email" value={this.state.lastName} />
+                        </div>
                         <button>Submit Form</button>
                         <br />
                         {this.state.formData.firstName}
                         <br />
                         {this.state.formData.lastName}
+                        <br />
+                        {this.state.formData.email}
                     </form>
                 </div>
             );
