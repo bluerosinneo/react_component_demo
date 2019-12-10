@@ -21,21 +21,34 @@ class Jeopardy extends Component {
         })
     }
 
+    answerGiven(){
+
+    }
+
     componentDidMount(){
         this.getNewQuestion();
     }
 
     render(){
-        
-        if(isEmpty(this.state.data)){
-            console.log(this.state.data.id);
+        // conditional this.state.data does not work
+        // since this.state.date exists at construction
+        // so use this.state.data.id to see if actual data is there
+        // is there somethign else we can use?
+        if(this.state.data.id){
+            console.log(this.state.data.category.title) 
             return(
+                
                 <div>
-                    <span>{this.state.data.id}</span>
-                    <br/>
-                    cramer
-                    <br/>
-                    <span>{JSON.stringify(this.state.data)}</span>
+                    <div>{JSON.stringify(this.state.data)}</div>
+                    <div>-</div>
+                    <div>Question</div>
+                    <div>{this.state.data.question}</div>
+                    <div>Title</div>
+                    <div>{this.state.data.category.title}</div>
+                    <div>Value</div>
+                    <div>{this.state.data.value}</div>
+                    
+                    
                     {/* <span>{JSON.stringify(this.state.data[0])}</span> */}
                 </div>
             );
