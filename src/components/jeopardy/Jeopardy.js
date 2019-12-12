@@ -6,10 +6,12 @@ class Jeopardy extends Component {
     constructor(props){
         super(props);
         this.client = new JeopardyService();
-        this.formData = {};
         this.state = {
             data: {},
-            score: 0
+            score: 0,
+            formData: {
+                answer: "",
+            }
         }
     }
 
@@ -32,10 +34,10 @@ class Jeopardy extends Component {
 
     submitAnswer = (event) => {
         event.preventDefault();
-        console.log(this.formData.answer);
+        console.log(this.state.formData.answer);
         console.log(this.state.data.answer);
-        console.log(this.formData.answer === this.state.data.answer);
-        if(this.formData.answer === this.state.data.answer){
+        console.log(this.state.formData.answer === this.state.data.answer);
+        if(this.state.formData.answer === this.state.data.answer){
             let tempScore = this.state.score;
             tempScore = tempScore + this.state.data.value;
             this.setState({
@@ -45,9 +47,9 @@ class Jeopardy extends Component {
     }
 
     handleChange = (event) => {
-        let formData = this.formData;
+        let formData = this.state.formData;
         formData[event.target.name] = event.target.value;
-        this.formData = formData;
+        this.setState({formData});
     }
 
     render(){
@@ -74,7 +76,7 @@ class Jeopardy extends Component {
                     <div>Value</div>
                     <div>{this.state.data.value}</div>
                     <form onSubmit={this.submitAnswer}>
-                        <input onChange={this.handleChange} name="answer" />
+                        <input onChange={this.handleChange} type="text" name="answer" />
                         <button>Submit Answer</button>
                     </form>
                     <div>Score</div>
