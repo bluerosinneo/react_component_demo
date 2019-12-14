@@ -17,7 +17,7 @@ class Jeopardy extends Component {
 
     getNewQuestion(){
         return this.client.getQuestion().then(result => {
-            console.log(result.data[0]);
+            console.log(result.data[0].answer);
             this.setState({
                 data: result.data[0]
             })
@@ -34,9 +34,9 @@ class Jeopardy extends Component {
 
     submitAnswer = (event) => {
         event.preventDefault();
-        console.log(this.state.formData.answer);
-        console.log(this.state.data.answer);
-        console.log(this.state.formData.answer === this.state.data.answer);
+        // console.log(this.state.formData.answer);
+        // console.log(this.state.data.answer);
+        // console.log(this.state.formData.answer === this.state.data.answer);
         if(this.state.formData.answer === this.state.data.answer){
             let tempScore = this.state.score;
             tempScore = tempScore + this.state.data.value;
@@ -44,6 +44,17 @@ class Jeopardy extends Component {
                 score: tempScore
             })
         }
+        else{
+            let tempScore = this.state.score;
+            tempScore = tempScore - this.state.data.value;
+            this.setState({
+                score: tempScore
+            })
+        }
+        this.getNewQuestion()
+        this.setState(
+            {formData: {answer: ""}}
+        )
     }
 
     handleChange = (event) => {
@@ -53,7 +64,7 @@ class Jeopardy extends Component {
     }
 
     render(){
-        console.log(this.state.data.answer);
+        // console.log(this.state.data.answer);
 
 
         // conditional this.state.data does not work
@@ -67,20 +78,16 @@ class Jeopardy extends Component {
             return(
                 
                 <div>
-                    <div>{JSON.stringify(this.state.data)}</div>
-                    <div>-</div>
-                    <div>Question</div>
-                    <div>{this.state.data.question}</div>
-                    <div>Category</div>
-                    <div>{this.state.data.category.title}</div>
-                    <div>Value</div>
-                    <div>{this.state.data.value}</div>
+                    {/* <div>{JSON.stringify(this.state.data)}</div> */}
+                    <div>Category: {this.state.data.category.title}</div>
+                    <div>Question: {this.state.data.question}</div>
+                    <div>Value: {this.state.data.value}</div>
+                    <div>Current Score: {this.state.score}</div>
                     <form onSubmit={this.submitAnswer}>
-                        <input onChange={this.handleChange} type="text" name="answer" />
+                        <input onChange={this.handleChange} type="text" name="answer" value={this.state.formData.answer}/>
                         <button>Submit Answer</button>
                     </form>
-                    <div>Score</div>
-                    <div>{this.state.score}</div>
+
                     
                     
                     {/* <span>{JSON.stringify(this.state.data[0])}</span> */}
