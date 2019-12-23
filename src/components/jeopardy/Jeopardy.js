@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import JeopardyService from "../../jeopardyService";
+import JeapDisplay from "../jeapDisplay/JeapDisplay";
 
 class Jeopardy extends Component {
     constructor(props){
@@ -64,39 +65,22 @@ class Jeopardy extends Component {
     }
 
     render(){
-        // console.log(this.state.data.answer);
 
-
-        // conditional this.state.data does not work
-        // since this.state.date exists at construction
-        // so use this.state.data.id to see if actual data is there
-        // is there somethign else we can use?
-        // console.log(this.state.data.category.title)
         if(this.state.data.id){
-            // console.log(this.state.data.category.title)
-            // console.log(this.state.data.happy + " &&&");
             return(
-                
-                <div>
-                    {/* <div>{JSON.stringify(this.state.data)}</div> */}
-                    <div>Category: {this.state.data.category.title}</div>
-                    <div>Question: {this.state.data.question}</div>
-                    <div>Value: {this.state.data.value}</div>
-                    <div>Current Score: {this.state.score}</div>
-                    <form onSubmit={this.submitAnswer}>
-                        <input onChange={this.handleChange} type="text" name="answer" value={this.state.formData.answer}/>
-                        <button>Submit Answer</button>
-                    </form>
-
-                    
-                    
-                    {/* <span>{JSON.stringify(this.state.data[0])}</span> */}
-                </div>
-            );
+            <JeapDisplay
+                data={this.state.data}
+                handleChange={this.handleChange}
+                submitAnswer={this.submitAnswer}
+                answer={this.state.formData.answer}
+                score={this.state.score}
+            />
+            )
         }
         else{
             return(
                 <div>
+                    um?
                 </div>
             );
         }
