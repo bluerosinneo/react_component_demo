@@ -10,12 +10,25 @@ class Jeopardy extends Component {
         this.state = {
             data: {},
             score: 0,
+            categories: {
+                titles: [
+                    "",
+                    "",
+                    ""
+                ],
+                ids: [
+                    0,
+                    0,
+                    0
+                ],
+            },
             formData: {
                 answer: "",
             }
         }
     }
 
+    // no longer used under Hardmode
     getNewQuestion(){
         return this.client.getQuestion().then(result => {
             console.log(result.data[0].answer);
@@ -25,14 +38,76 @@ class Jeopardy extends Component {
         })
     }
 
-    answerGiven(){
+    // gets a random question from a specific categorie
+    getNewQuestionByCategorie(categorieId){
+        return this.client.getQuestionByCategorie(categorieId).then(result => {
+            // console.log(result.data);
+            // store a randome question from the categorie
+            let tempData = result.data[Math.floor(Math.random()*result.data.length)]
+            // reset the categories (for displaying purposes)
+            let tempCategories = {
+                titles: [
+                    "",
+                    "",
+                    ""
+                ],
+                ids: [
+                    0,
+                    0,
+                    0
+                ],
+            }
+            // for cheating purposes
+            console.log(tempData.answer);
+            this.setState({
+                data: tempData,
+                categories: tempCategories,
+            })
+        })
+    }
 
+    // gets three different categories
+    getNewThreeCategories(){
+        return this.client.getThreeCategories().then(result => {
+            // console.log(result.data);
+            let tempCategories = {
+                    titles: [
+                        result.data[0].title,
+                        result.data[1].title,
+                        result.data[2].title
+                    ],
+                    ids: [
+                        result.data[0].id,
+                        result.data[1].id,
+                        result.data[2].id
+                    ],
+            }
+            this.setState({
+                data: {},
+                categories: tempCategories,
+            })
+        })
     }
 
     componentDidMount(){
-        this.getNewQuestion();
+        // that was the old way fro easy and medium
+        // this.getNewQuestion();
+
+        // this is the new way for hard
+        this.getNewThreeCategories();
     }
 
+    // this is probably useless and should be refactored into getNewQuestionByCategorie
+    // however I do like that this part abstracts the stored categorieID from state
+    // but it is a bit complicated
+    submitCategorie = (event) => {
+        // console.log(event.target.value);
+        this.getNewQuestionByCategorie(this.state.categories.ids[event.target.value]);
+
+    }
+
+    // moving to hard mode this is ~unchanged
+    // only change is that instead of getNewQuestion() instead getNewThreeCategories() is called
     submitAnswer = (event) => {
         event.preventDefault();
         // console.log(this.state.formData.answer);
@@ -52,7 +127,8 @@ class Jeopardy extends Component {
                 score: tempScore
             })
         }
-        this.getNewQuestion()
+        // this.getNewQuestion()
+        this.getNewThreeCategories();
         this.setState(
             {formData: {answer: ""}}
         )
@@ -65,7 +141,32 @@ class Jeopardy extends Component {
     }
 
     render(){
+        // conditionally rendering based on state
+        // state should either have meaninfull info for either state.data or state.categories
+        // but not both at the same time
 
+        //Categories
+        if(this.state.categories.titles[0] != ""){
+            return(
+                <div>
+                    Please Select a Categorie
+                    <br />
+                    <button value={0} onClick={this.submitCategorie}>
+                        {this.state.categories.titles[0]}
+                    </button>
+                    <br />
+                    <button value={1} onClick={this.submitCategorie}>
+                        {this.state.categories.titles[1]}
+                    </button>
+                    <br />
+                    <button value={2} onClick={this.submitCategorie}>
+                        {this.state.categories.titles[2]}
+                    </button>
+                </div>
+            )
+        }
+
+        // Question/Answer
         if(this.state.data.id){
             return(
             <JeapDisplay
@@ -77,13 +178,14 @@ class Jeopardy extends Component {
             />
             )
         }
-        else{
-            return(
-                <div>
-                    um?
-                </div>
-            );
-        }
+
+
+
+        return(
+            <div>
+                ......Loading :-)
+            </div>
+        );
 
     }
 }
