@@ -126,6 +126,7 @@ class Jeopardy extends Component {
             let tempScore = this.state.score;
             tempScore = tempScore - this.state.data.value;
             this.setState({
+                firstAnswer: true,
                 score: tempScore
             })
         }
