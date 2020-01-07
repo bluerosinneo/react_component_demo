@@ -157,21 +157,6 @@ class Jeopardy extends Component {
                     firstAnswer={this.state.firstAnswer}
                     score={this.state.score}
                 />
-                // <div>
-                //     Please Select a Categorie
-                //     <br />
-                //     <button value={0} onClick={this.submitCategorie}>
-                //         {this.state.categories.titles[0]}
-                //     </button>
-                //     <br />
-                //     <button value={1} onClick={this.submitCategorie}>
-                //         {this.state.categories.titles[1]}
-                //     </button>
-                //     <br />
-                //     <button value={2} onClick={this.submitCategorie}>
-                //         {this.state.categories.titles[2]}
-                //     </button>
-                // </div>
             )
         }
 
