@@ -8,6 +8,7 @@ class Jeopardy extends Component {
         super(props);
         this.client = new JeopardyService();
         this.state = {
+            firstAnswer: false,
             data: {},
             score: 0,
             categories: {
@@ -117,6 +118,7 @@ class Jeopardy extends Component {
             let tempScore = this.state.score;
             tempScore = tempScore + this.state.data.value;
             this.setState({
+                firstAnswer: true,
                 score: tempScore
             })
         }
@@ -134,7 +136,7 @@ class Jeopardy extends Component {
         )
     }
 
-    handleChange = (event) => {
+    handleAnswerTyping = (event) => {
         let formData = this.state.formData;
         formData[event.target.name] = event.target.value;
         this.setState({formData});
@@ -146,23 +148,29 @@ class Jeopardy extends Component {
         // but not both at the same time
 
         //Categories
-        if(this.state.categories.titles[0] != ""){
+        if(this.state.categories.titles[0] !== ""){
             return(
-                <div>
-                    Please Select a Categorie
-                    <br />
-                    <button value={0} onClick={this.submitCategorie}>
-                        {this.state.categories.titles[0]}
-                    </button>
-                    <br />
-                    <button value={1} onClick={this.submitCategorie}>
-                        {this.state.categories.titles[1]}
-                    </button>
-                    <br />
-                    <button value={2} onClick={this.submitCategorie}>
-                        {this.state.categories.titles[2]}
-                    </button>
-                </div>
+                <JeapDisplay
+                    categoryTitles={this.state.categories.titles } 
+                    submitCategorie={this.submitCategorie}
+                    firstAnswer={this.state.firstAnswer}
+                    score={this.state.score}
+                />
+                // <div>
+                //     Please Select a Categorie
+                //     <br />
+                //     <button value={0} onClick={this.submitCategorie}>
+                //         {this.state.categories.titles[0]}
+                //     </button>
+                //     <br />
+                //     <button value={1} onClick={this.submitCategorie}>
+                //         {this.state.categories.titles[1]}
+                //     </button>
+                //     <br />
+                //     <button value={2} onClick={this.submitCategorie}>
+                //         {this.state.categories.titles[2]}
+                //     </button>
+                // </div>
             )
         }
 
@@ -170,11 +178,13 @@ class Jeopardy extends Component {
         if(this.state.data.id){
             return(
             <JeapDisplay
+                categoryTitles={this.state.categories.titles }
                 data={this.state.data}
-                handleChange={this.handleChange}
+                handleAnswerTyping={this.handleAnswerTyping}
                 submitAnswer={this.submitAnswer}
                 answer={this.state.formData.answer}
                 score={this.state.score}
+                firstAnswer={this.state.firstAnswer}
             />
             )
         }
